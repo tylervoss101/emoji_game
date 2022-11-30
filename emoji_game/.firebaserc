@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "emoji-game-voss": {
+      "hosting": {
+        "emoji_game": [
+          "emoji-game-voss"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "emoji-game-voss"
+  }
+}

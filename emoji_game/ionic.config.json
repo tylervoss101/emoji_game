@@ -1,7 +1,0 @@
-{
-  "name": "emoji_game",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
