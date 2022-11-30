@@ -9,14 +9,17 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { QuestionComponent } from './components/question/question.component';
+import { FormsModule } from '@angular/forms';
+import { LevelsComponent } from './components/levels/levels.component';
 
 @NgModule({
-  declarations: [AppComponent, WelcomeComponent, QuestionComponent],
+  declarations: [AppComponent, WelcomeComponent, QuestionComponent, LevelsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
