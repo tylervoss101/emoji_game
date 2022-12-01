@@ -11,15 +11,25 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { QuestionComponent } from './components/question/question.component';
 import { FormsModule } from '@angular/forms';
 import { LevelsComponent } from './components/levels/levels.component';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 @NgModule({
-  declarations: [AppComponent, WelcomeComponent, QuestionComponent, LevelsComponent],
+  declarations: [
+    AppComponent,
+    WelcomeComponent,
+    QuestionComponent,
+    LevelsComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     FormsModule,
+    MatCardModule,
+    MatInputModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
