@@ -1,0 +1,43 @@
+#card {
+  background-color: aquamarine;
+  width: 50%;
+  height: 30em;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#header{
+  text-align: center;
+  font-family: 'Bowlby One SC', cursive;
+  // font-size: 6vw;
+  font-size: clamp(16px, 6vw, 300px);
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+}
+
+#white-section {
+  background-color: white;
+  width: 90%;
+  height: 60%;
+  border-radius: 1em;
+  margin-bottom: 4em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  background-color: aliceblue;
+}
+
+.example-full-width {
+  width: 100%;
+}
+

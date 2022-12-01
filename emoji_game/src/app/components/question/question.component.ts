@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRoute } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+
 interface Question {
   question: string;
   answer: string;
@@ -21,12 +23,14 @@ export class QuestionComponent implements OnInit {
   moviesList: Question[] = [];
   currentList: Question[] = [];
   //keeps track of current question
-  questionCount: number = 0;
+  questionCount: number =
+    Math.floor(Math.random() * this.currentList.length) + 1;
   response: string = ''; //users input
   answer: string = ''; //actual answer
   feedback: string = '';
   wordCount: number = 0;
   charCount: number = 0;
+  value = 'Clear me';
 
   //get the collection from firebase and make a list of the messages
   constructor(private db: AngularFirestore, private actRt: ActivatedRoute) {
@@ -68,9 +72,12 @@ export class QuestionComponent implements OnInit {
       this.currentList = this.moviesList;
     }
 
-    if (this.response === this.currentList[i].answer) {
+    if (
+      this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
+    ) {
       console.log('correct!');
-      this.questionCount++;
+      this.questionCount =
+        Math.floor(Math.random() * this.currentList.length) + 1;
     } else {
       console.log('Wrong');
     }
