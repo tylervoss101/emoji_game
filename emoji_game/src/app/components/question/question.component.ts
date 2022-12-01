@@ -11,17 +11,23 @@ interface Question {
   styleUrls: ['./question.component.scss'],
 })
 export class QuestionComponent implements OnInit {
+  //booleans to keep track of what level it is
+  easy: boolean = false;
+  hard: boolean = false;
+  movies: boolean = false;
+  id: string = ''; //id is passed from levels, either easy hard or movies
   easyList: Question[] = [];
   hardList: Question[] = [];
   moviesList: Question[] = [];
   currentList: Question[] = [];
+  //keeps track of current question
   questionCount: number = 0;
-  response: string = '';
-  answer: string = '';
-  easy: boolean = false;
-  hard: boolean = false;
-  movies: boolean = false;
-  id: string = '';
+  response: string = ''; //users input
+  answer: string = ''; //actual answer
+  feedback: string = '';
+  wordCount: number = 0;
+  charCount: number = 0;
+
   //get the collection from firebase and make a list of the messages
   constructor(private db: AngularFirestore, private actRt: ActivatedRoute) {
     db.collection<Question>('/easy')
@@ -47,36 +53,34 @@ export class QuestionComponent implements OnInit {
         }
       });
 
-    // //sets the current list to easy, hard, or movies
-    // if (this.easy) {
-    //   this.currentList = this.easyList;
-    // } else if (this.hard) {
-    //   this.currentList = this.hardList;
-    // } else if (this.movies) {
-    //   this.currentList = this.moviesList;
-    // }
+    //calculate word count
+    // this.wordCount = this.calculateWordCount(
+    //   this.currentList[this.questionCount].answer
+    // );
   }
   enter(i: number) {
-    if (this.easy === true && this.response === this.easyList[i].answer) {
-      console.log('correct!');
-      this.questionCount++;
-    } else if (
-      this.hard === true &&
-      this.response === this.hardList[i].answer
-    ) {
-      console.log('correct!');
-      this.questionCount++;
-    } else if (
-      this.movies === true &&
-      this.response === this.moviesList[i].answer
-    ) {
+    //sets the current list to easy, hard, or movies
+    if (this.easy === true) {
+      this.currentList = this.easyList;
+    } else if (this.hard === true) {
+      this.currentList = this.hardList;
+    } else if (this.movies === true) {
+      this.currentList = this.moviesList;
+    }
+
+    if (this.response === this.currentList[i].answer) {
       console.log('correct!');
       this.questionCount++;
     } else {
       console.log('Wrong');
     }
-
     this.response = '';
+  }
+
+  calculateWordCount(str: string): number {
+    const arr = str.split(' ');
+
+    return arr.filter((word) => word !== '').length;
   }
   ngOnInit(): void {
     Number(this.id);

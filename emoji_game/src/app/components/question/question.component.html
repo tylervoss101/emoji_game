@@ -1,6 +1,6 @@
 <button routerLink="/welcome" mode="easy">Home</button> <br />
 <button routerLink="/levels" mode="easy">Levels</button>
-<p>Question {{ questionCount + 1 }}!</p>
+<p>Question {{ questionCount + 1 }}</p>
 <!-- <div *ngFor="let item of easyList">{{ item.question }}</div> -->
 <div *ngIf="easy">
   <div>{{ easyList[questionCount].question }}</div>
@@ -14,3 +14,6 @@
 
 <input (keyup.enter)="enter(questionCount)" [(ngModel)]="response" />
 <button (click)="enter(questionCount)">Next</button>
+{{ wordCount }}
+{{ charCount }}
+{{ feedback }}
