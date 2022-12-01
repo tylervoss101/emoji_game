@@ -1,21 +1,22 @@
 #card {
-  background-color: aquamarine;
+  background-color: #42a5f5;
   width: 50%;
   height: 30em;
   min-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 #header{
-  text-align: center;
   font-family: 'Bowlby One SC', cursive;
   // font-size: 6vw;
-  font-size: clamp(16px, 6vw, 300px);
+  font-size: clamp(30px, 6vw, 300px);
   white-space: nowrap;
   display: flex;
   flex-direction: row;
+
 }
 
 #white-section {
@@ -27,6 +28,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
 }
 
@@ -40,4 +42,44 @@
 .example-full-width {
   width: 100%;
 }
+
+mat-card-content {
+  width: 100%;
+  // background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#input {
+  width: 80%;
+  border-radius: 1em;
+  font-size: 3em;
+  padding-left: 0.4em;
+}
+
+#heart-container {
+  width: 100%;
+  height: 50px;
+  // display: flex;
+  // justify-content: flex-end;
+  // align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+
+}
+
+#heart {
+  width: 2em;
+  color: red;
+  font-size: 3em;
+  float: left;
+  padding-right: 0px;
+  margin-right: -1em;
+  // padding: 0.2em;
+}
+
+
 
