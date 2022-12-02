@@ -30,6 +30,8 @@ export class QuestionComponent implements OnInit {
   feedback: string = '';
   wordCount: number = 0;
   charCount: number = 0;
+  hintCount: number = 0;
+  wordCountMessage: string = '';
   charLines: string[] = [];
   value = 'Clear me';
 
@@ -79,9 +81,11 @@ export class QuestionComponent implements OnInit {
     for (let i = 0; i < str.length; i++) {
       this.charLines.push('_ ');
     }
-    this.charLines.push('  -- ');
+    this.charLines.push(' -- '); //using hyphens for now because the spaces don't show up on screen
   }
   displayWordCount(i: number) {
+    this.wordCountMessage = '';
+    this.hintCount++;
     this.charLines = [];
     //sets the current list to easy, hard, or movies
     if (this.easy === true) {
@@ -91,9 +95,22 @@ export class QuestionComponent implements OnInit {
     } else if (this.movies === true) {
       this.currentList = this.moviesList;
     }
-    this.wordCount = this.calculateWordCount(
-      this.currentList[i].answer.toLowerCase()
-    );
+
+    //if hint count is 1, just display word count.
+    if (this.hintCount === 1) {
+      this.wordCountMessage = 'Word Count: ' + this.wordCount;
+    }
+    //if hint count is 2, display character and word count
+    else if (this.hintCount === 2) {
+      this.wordCountMessage = 'Word Count: ' + this.wordCount;
+      this.wordCount = this.calculateWordCount(
+        this.currentList[i].answer.toLowerCase()
+      );
+    } else {
+      this.hintCount = 0;
+    }
+
+    //this.wordCountMessage = 'Word Count: ' + this.wordCount;
   }
 
   calculateWordCount(str: string): number {
@@ -101,8 +118,7 @@ export class QuestionComponent implements OnInit {
     for (let i = 0; i < splitArray.length; i++) {
       this.displayBlanks(splitArray[i]);
     }
-    this.charLines.pop();
-
+    this.charLines.pop(); //deletes the unnecessary space at the end
     return splitArray.filter((word) => word !== '').length;
   }
   enter(i: number) {
@@ -127,8 +143,11 @@ export class QuestionComponent implements OnInit {
       this.feedback = 'Wrong';
     }
     this.response = '';
+    this.wordCountMessage = '';
     this.wordCount = 0;
     this.charCount = 0;
+    this.hintCount = 0;
+    this.charLines = [];
   }
 
   ngOnInit(): void {
