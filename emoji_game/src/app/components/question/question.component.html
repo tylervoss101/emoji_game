@@ -20,8 +20,9 @@
   <mat-card-content>
     <input (keyup.enter)="enter(questionCount)" [(ngModel)]="response" />
     <button id="button" (click)="enter(questionCount)">Next</button>
-    {{ wordCount }}
-    {{ charCount }}
+    <br />
+    {{ wordCount }}<br />
+    {{ charCount }}<br />
     {{ feedback }}
   </mat-card-content>
 </mat-card>

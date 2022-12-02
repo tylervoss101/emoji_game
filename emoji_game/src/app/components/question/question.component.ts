@@ -76,10 +76,12 @@ export class QuestionComponent implements OnInit {
       this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
     ) {
       console.log('correct!');
+      this.feedback = 'Correct';
       this.questionCount =
         Math.floor(Math.random() * this.currentList.length) + 1;
     } else {
       console.log('Wrong');
+      this.feedback = 'Wrong';
     }
     this.response = '';
   }
