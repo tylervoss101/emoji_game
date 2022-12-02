@@ -14,6 +14,7 @@ import { LevelsComponent } from './components/levels/levels.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +31,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatInputModule,
     MatIconModule,
+    NoopAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
