@@ -21,8 +21,13 @@
     <input (keyup.enter)="enter(questionCount)" [(ngModel)]="response" />
     <button id="button" (click)="enter(questionCount)">Next</button>
     <br />
-    {{ wordCount }}<br />
-    {{ charCount }}<br />
+    <button (click)="displayWordCount(questionCount)">Reveal Word Count</button
+    >{{ wordCount }}<br />
+    <button (click)="displayCharCount(questionCount)">
+      Reveal Character Count</button
+    >{{ charCount }}<br />
+
+    <span *ngFor="let charLine of charLines">{{ charLine }}</span>
     {{ feedback }}
   </mat-card-content>
 </mat-card>

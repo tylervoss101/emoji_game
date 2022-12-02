@@ -30,6 +30,7 @@ export class QuestionComponent implements OnInit {
   feedback: string = '';
   wordCount: number = 0;
   charCount: number = 0;
+  charLines: string[] = [];
   value = 'Clear me';
 
   //get the collection from firebase and make a list of the messages
@@ -56,11 +57,53 @@ export class QuestionComponent implements OnInit {
           this.moviesList = result;
         }
       });
+    console.log(this.easyList);
 
     //calculate word count
     // this.wordCount = this.calculateWordCount(
     //   this.currentList[this.questionCount].answer
     // );
+  }
+  displayCharCount(i: number) {
+    //sets the current list to easy, hard, or movies
+    if (this.easy === true) {
+      this.currentList = this.easyList;
+    } else if (this.hard === true) {
+      this.currentList = this.hardList;
+    } else if (this.movies === true) {
+      this.currentList = this.moviesList;
+    }
+    this.charCount = this.currentList[i].answer.toLowerCase().length;
+  }
+  displayBlanks(str: string) {
+    for (let i = 0; i < str.length; i++) {
+      this.charLines.push('_ ');
+    }
+    this.charLines.push('  -- ');
+  }
+  displayWordCount(i: number) {
+    this.charLines = [];
+    //sets the current list to easy, hard, or movies
+    if (this.easy === true) {
+      this.currentList = this.easyList;
+    } else if (this.hard === true) {
+      this.currentList = this.hardList;
+    } else if (this.movies === true) {
+      this.currentList = this.moviesList;
+    }
+    this.wordCount = this.calculateWordCount(
+      this.currentList[i].answer.toLowerCase()
+    );
+  }
+
+  calculateWordCount(str: string): number {
+    let splitArray = str.split(' ');
+    for (let i = 0; i < splitArray.length; i++) {
+      this.displayBlanks(splitArray[i]);
+    }
+    this.charLines.pop();
+
+    return splitArray.filter((word) => word !== '').length;
   }
   enter(i: number) {
     //sets the current list to easy, hard, or movies
@@ -84,13 +127,10 @@ export class QuestionComponent implements OnInit {
       this.feedback = 'Wrong';
     }
     this.response = '';
+    this.wordCount = 0;
+    this.charCount = 0;
   }
 
-  calculateWordCount(str: string): number {
-    const arr = str.split(' ');
-
-    return arr.filter((word) => word !== '').length;
-  }
   ngOnInit(): void {
     Number(this.id);
     this.id = this.actRt.snapshot.paramMap.get('id')!;
