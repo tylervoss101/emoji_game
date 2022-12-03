@@ -145,7 +145,7 @@ export class QuestionComponent implements OnInit {
     ) {
       console.log('correct!');
 
-    this.feedback = 'Correct';
+      this.feedback = 'Correct';
       this.questionCount = (this.questionCount + 1) % this.currentList.length;
     } else {
       console.log('Wrong');
@@ -159,13 +159,6 @@ export class QuestionComponent implements OnInit {
     this.hintCount = 0;
     this.charLines = [];
   }
-
-  calculateWordCount(str: string): number {
-    const arr = str.split(' ');
-
-    return arr.filter((word) => word !== '').length;
-  }
-
 
   ngOnInit(): void {
     this.questionCount =
