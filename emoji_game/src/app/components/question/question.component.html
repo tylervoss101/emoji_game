@@ -7,19 +7,29 @@
   <div id="white-section">
     <mat-card-header id="header">
       <div *ngIf="easy">
-        <div>{{ easyList[questionCount].question }}</div>
+        <div class="emoji">{{ easyList[questionCount].question }}</div>
       </div>
       <div *ngIf="hard">
-        <div>{{ hardList[questionCount].question }}</div>
+        <div class="emoji">{{ hardList[questionCount].question }}</div>
       </div>
       <div *ngIf="movies">
-        <div>{{ moviesList[questionCount].question }}</div>
+        <div class="emoji">{{ moviesList[questionCount].question }}</div>
       </div>
     </mat-card-header>
   </div>
   <mat-card-content>
-    <input (keyup.enter)="enter(questionCount)" [(ngModel)]="response" />
-    <button id="button" (click)="enter(questionCount)">Next</button>
+    <input
+      class="input"
+      (keyup.enter)="enter(questionCount)"
+      [(ngModel)]="response"
+    />
+    <button
+      class="mdc-button__label"
+      id="button"
+      (click)="enter(questionCount)"
+    >
+      Next
+    </button>
     <br />
     <button (click)="displayWordCount(questionCount)">Hint</button> <br />
     {{ wordCountMessage }} <br />

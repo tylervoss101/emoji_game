@@ -22,6 +22,7 @@ export class QuestionComponent implements OnInit {
   hardList: Question[] = [];
   moviesList: Question[] = [];
   currentList: Question[] = [];
+  splitArray: string[] = [];
   //keeps track of current question
   questionCount: number =
     Math.floor(Math.random() * this.currentList.length) + 1;
@@ -60,11 +61,6 @@ export class QuestionComponent implements OnInit {
         }
       });
     console.log(this.easyList);
-
-    //calculate word count
-    // this.wordCount = this.calculateWordCount(
-    //   this.currentList[this.questionCount].answer
-    // );
   }
   displayCharCount(i: number) {
     //sets the current list to easy, hard, or movies
@@ -83,6 +79,13 @@ export class QuestionComponent implements OnInit {
     }
     this.charLines.push(' -- '); //using hyphens for now because the spaces don't show up on screen
   }
+  displayBlanksPlusFirstLetter(str: string) {
+    this.charLines.push(str.charAt(0));
+    for (let i = 0; i < str.length - 1; i++) {
+      this.charLines.push('_ ');
+    }
+    this.charLines.push(' -- '); //using hyphens for now because the spaces don't show up on screen
+  }
   displayWordCount(i: number) {
     this.wordCountMessage = '';
     this.hintCount++;
@@ -95,7 +98,7 @@ export class QuestionComponent implements OnInit {
     } else if (this.movies === true) {
       this.currentList = this.moviesList;
     }
-
+    this.wordCount = this.calculateWordCount(this.currentList[i].answer);
     //if hint count is 1, just display word count.
     if (this.hintCount === 1) {
       this.wordCountMessage = 'Word Count: ' + this.wordCount;
@@ -106,20 +109,26 @@ export class QuestionComponent implements OnInit {
       this.wordCount = this.calculateWordCount(
         this.currentList[i].answer.toLowerCase()
       );
+      for (let i = 0; i < this.splitArray.length; i++) {
+        this.displayBlanks(this.splitArray[i]);
+      }
+    } else if (this.hintCount === 3) {
+      for (let i = 0; i < this.splitArray.length; i++) {
+        this.displayBlanksPlusFirstLetter(this.splitArray[i]);
+      }
     } else {
       this.hintCount = 0;
+      console.log('reset');
     }
 
     //this.wordCountMessage = 'Word Count: ' + this.wordCount;
   }
-
+  //TO dO FIX WORD COuNT
   calculateWordCount(str: string): number {
-    let splitArray = str.split(' ');
-    for (let i = 0; i < splitArray.length; i++) {
-      this.displayBlanks(splitArray[i]);
-    }
+    this.splitArray = str.split(' ');
+
     this.charLines.pop(); //deletes the unnecessary space at the end
-    return splitArray.filter((word) => word !== '').length;
+    return this.splitArray.filter((word) => word !== '').length;
   }
   enter(i: number) {
     //sets the current list to easy, hard, or movies
