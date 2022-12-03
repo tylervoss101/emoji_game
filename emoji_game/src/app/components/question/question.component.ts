@@ -24,8 +24,8 @@ export class QuestionComponent implements OnInit {
   currentList: Question[] = [];
   splitArray: string[] = [];
   //keeps track of current question
-  questionCount: number =
-    Math.floor(Math.random() * this.currentList.length) + 1;
+  questionCount: number = 0;
+  lives: number[] = [1, 2, 3];
   response: string = ''; //users input
   answer: string = ''; //actual answer
   feedback: string = '';
@@ -144,11 +144,12 @@ export class QuestionComponent implements OnInit {
       this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
     ) {
       console.log('correct!');
-      this.feedback = 'Correct';
-      this.questionCount =
-        Math.floor(Math.random() * this.currentList.length) + 1;
+
+    this.feedback = 'Correct';
+      this.questionCount = (this.questionCount + 1) % this.currentList.length;
     } else {
       console.log('Wrong');
+      this.lives.pop();
       this.feedback = 'Wrong';
     }
     this.response = '';
@@ -159,7 +160,17 @@ export class QuestionComponent implements OnInit {
     this.charLines = [];
   }
 
+  calculateWordCount(str: string): number {
+    const arr = str.split(' ');
+
+    return arr.filter((word) => word !== '').length;
+  }
+
+
   ngOnInit(): void {
+    this.questionCount =
+      Math.floor(Math.random() * this.currentList.length) + 1;
+    console.log(this.questionCount);
     Number(this.id);
     this.id = this.actRt.snapshot.paramMap.get('id')!;
     console.log(this.id);

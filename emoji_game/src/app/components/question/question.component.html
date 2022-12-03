@@ -2,8 +2,12 @@
 <button routerLink="/levels" mode="easy">Levels</button>
 <!-- <p>Question {{ questionCount + 1 }}</p> -->
 <!-- <div *ngFor="let item of easyList">{{ item.question }}</div> -->
-
 <mat-card id="card">
+  <div id="heart-container">
+    <div *ngFor="let heart of lives">
+      <mat-icon id="heart">favorite</mat-icon>
+    </div>
+  </div>
   <div id="white-section">
     <mat-card-header id="header">
       <div *ngIf="easy">
@@ -19,6 +23,7 @@
   </div>
   <mat-card-content>
     <input
+
       class="input"
       (keyup.enter)="enter(questionCount)"
       [(ngModel)]="response"
@@ -44,5 +49,6 @@
     }}</span>
     <br />
     {{ feedback }}
+
   </mat-card-content>
 </mat-card>
