@@ -1,8 +1,8 @@
-<button routerLink="/welcome" mode="easy">Home</button> <br />
-<button routerLink="/levels" mode="easy">Levels</button>
 <!-- <p>Question {{ questionCount + 1 }}</p> -->
 <!-- <div *ngFor="let item of easyList">{{ item.question }}</div> -->
 <mat-card id="card">
+  <button class="menu" routerLink="/welcome" mode="easy">🏠</button>
+  <button class="menu" routerLink="/levels" mode="easy">🎚️</button>
   <div id="heart-container">
     <div *ngFor="let heart of lives">
       <mat-icon id="heart">favorite</mat-icon>
@@ -23,32 +23,24 @@
   </div>
   <mat-card-content>
     <input
-
       class="input"
       (keyup.enter)="enter(questionCount)"
       [(ngModel)]="response"
     />
-    <button
-      class="mdc-button__label"
-      id="button"
-      (click)="enter(questionCount)"
-    >
-      Next
-    </button>
-    <br />
-    <button (click)="displayWordCount(questionCount)">Hint</button> <br />
-    {{ wordCountMessage }} <br />
-    <!-- Word Count: {{ wordCount }}<br />
-    Character Count: {{ charCount }} -->
-    <!-- <button (click)="displayCharCount(questionCount)">
-      Reveal Character Count</button
-    >{{ charCount }}<br /> -->
+  </mat-card-content>
+  <button class="button3" id="button" (click)="enter(questionCount)">
+    Enter</button
+  ><br />
 
+  <button class="button3" (click)="displayWordCount(questionCount)">
+    Hint
+  </button>
+  <b class="word-count">{{ wordCountMessage }}</b>
+  <div class="char-line-section">
     <span class="char-line" *ngFor="let charLine of charLines">{{
       charLine
     }}</span>
-    <br />
-    {{ feedback }}
-
-  </mat-card-content>
+  </div>
+  <b> {{ feedback }}</b>
 </mat-card>
+<span *ngFor="let charLine of charLines">{{ charLine }}</span>

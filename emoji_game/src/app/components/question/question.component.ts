@@ -112,18 +112,19 @@ export class QuestionComponent implements OnInit {
       for (let i = 0; i < this.splitArray.length; i++) {
         this.displayBlanks(this.splitArray[i]);
       }
+      console.log(this.charLines);
+      this.charLines.pop();
     } else if (this.hintCount === 3) {
+      this.wordCountMessage = 'Word Count: ' + this.wordCount;
       for (let i = 0; i < this.splitArray.length; i++) {
         this.displayBlanksPlusFirstLetter(this.splitArray[i]);
       }
+      this.charLines.pop();
     } else {
       this.hintCount = 0;
       console.log('reset');
     }
-
-    //this.wordCountMessage = 'Word Count: ' + this.wordCount;
   }
-  //TO dO FIX WORD COuNT
   calculateWordCount(str: string): number {
     this.splitArray = str.split(' ');
 
@@ -145,12 +146,12 @@ export class QuestionComponent implements OnInit {
     ) {
       console.log('correct!');
 
-      this.feedback = 'Correct';
+      this.feedback = 'Correct!';
       this.questionCount = (this.questionCount + 1) % this.currentList.length;
     } else {
       console.log('Wrong');
       this.lives.pop();
-      this.feedback = 'Wrong';
+      this.feedback = 'Try Again!';
     }
     this.response = '';
     this.wordCountMessage = '';
