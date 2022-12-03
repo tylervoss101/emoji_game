@@ -22,6 +22,7 @@ export class QuestionComponent implements OnInit {
   hardList: Question[] = [];
   moviesList: Question[] = [];
   currentList: Question[] = [];
+  splitArray: string[] = [];
   //keeps track of current question
   questionCount: number = 0;
   lives: number[] = [1, 2, 3];
@@ -30,6 +31,9 @@ export class QuestionComponent implements OnInit {
   feedback: string = '';
   wordCount: number = 0;
   charCount: number = 0;
+  hintCount: number = 0;
+  wordCountMessage: string = '';
+  charLines: string[] = [];
   value = 'Clear me';
 
   //get the collection from firebase and make a list of the messages
@@ -56,11 +60,75 @@ export class QuestionComponent implements OnInit {
           this.moviesList = result;
         }
       });
+    console.log(this.easyList);
+  }
+  displayCharCount(i: number) {
+    //sets the current list to easy, hard, or movies
+    if (this.easy === true) {
+      this.currentList = this.easyList;
+    } else if (this.hard === true) {
+      this.currentList = this.hardList;
+    } else if (this.movies === true) {
+      this.currentList = this.moviesList;
+    }
+    this.charCount = this.currentList[i].answer.toLowerCase().length;
+  }
+  displayBlanks(str: string) {
+    for (let i = 0; i < str.length; i++) {
+      this.charLines.push('_ ');
+    }
+    this.charLines.push(' -- '); //using hyphens for now because the spaces don't show up on screen
+  }
+  displayBlanksPlusFirstLetter(str: string) {
+    this.charLines.push(str.charAt(0));
+    for (let i = 0; i < str.length - 1; i++) {
+      this.charLines.push('_ ');
+    }
+    this.charLines.push(' -- '); //using hyphens for now because the spaces don't show up on screen
+  }
+  displayWordCount(i: number) {
+    this.wordCountMessage = '';
+    this.hintCount++;
+    this.charLines = [];
+    //sets the current list to easy, hard, or movies
+    if (this.easy === true) {
+      this.currentList = this.easyList;
+    } else if (this.hard === true) {
+      this.currentList = this.hardList;
+    } else if (this.movies === true) {
+      this.currentList = this.moviesList;
+    }
+    this.wordCount = this.calculateWordCount(this.currentList[i].answer);
+    //if hint count is 1, just display word count.
+    if (this.hintCount === 1) {
+      this.wordCountMessage = 'Word Count: ' + this.wordCount;
+    }
+    //if hint count is 2, display character and word count
+    else if (this.hintCount === 2) {
+      this.wordCountMessage = 'Word Count: ' + this.wordCount;
+      this.wordCount = this.calculateWordCount(
+        this.currentList[i].answer.toLowerCase()
+      );
+      for (let i = 0; i < this.splitArray.length; i++) {
+        this.displayBlanks(this.splitArray[i]);
+      }
+    } else if (this.hintCount === 3) {
+      for (let i = 0; i < this.splitArray.length; i++) {
+        this.displayBlanksPlusFirstLetter(this.splitArray[i]);
+      }
+    } else {
+      this.hintCount = 0;
+      console.log('reset');
+    }
 
-    //calculate word count
-    // this.wordCount = this.calculateWordCount(
-    //   this.currentList[this.questionCount].answer
-    // );
+    //this.wordCountMessage = 'Word Count: ' + this.wordCount;
+  }
+  //TO dO FIX WORD COuNT
+  calculateWordCount(str: string): number {
+    this.splitArray = str.split(' ');
+
+    this.charLines.pop(); //deletes the unnecessary space at the end
+    return this.splitArray.filter((word) => word !== '').length;
   }
   enter(i: number) {
     //sets the current list to easy, hard, or movies
@@ -76,12 +144,20 @@ export class QuestionComponent implements OnInit {
       this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
     ) {
       console.log('correct!');
+
+    this.feedback = 'Correct';
       this.questionCount = (this.questionCount + 1) % this.currentList.length;
     } else {
       console.log('Wrong');
       this.lives.pop();
+      this.feedback = 'Wrong';
     }
     this.response = '';
+    this.wordCountMessage = '';
+    this.wordCount = 0;
+    this.charCount = 0;
+    this.hintCount = 0;
+    this.charLines = [];
   }
 
   calculateWordCount(str: string): number {
@@ -89,6 +165,7 @@ export class QuestionComponent implements OnInit {
 
     return arr.filter((word) => word !== '').length;
   }
+
 
   ngOnInit(): void {
     this.questionCount =
