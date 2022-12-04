@@ -1,4 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+* {
+  font-family: "Lexend";
+  //src: url("./assets/fonts/AntipastoPro-Bold_trial.ttf");
+}
+.container {
+  height: 100%;
+  width: 100%;
+  background-color: #42a5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
