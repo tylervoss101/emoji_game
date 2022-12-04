@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-
+import { Router } from '@angular/router';
 interface Question {
   question: string;
   answer: string;
@@ -26,18 +26,24 @@ export class QuestionComponent implements OnInit {
   //keeps track of current question
   questionCount: number = 0;
   lives: number[] = [1, 2, 3];
+  gameover: boolean = false;
   response: string = ''; //users input
   answer: string = ''; //actual answer
   feedback: string = '';
   wordCount: number = 0;
   charCount: number = 0;
   hintCount: number = 0;
+  score: number = 0;
   wordCountMessage: string = '';
   charLines: string[] = [];
   value = 'Clear me';
 
   //get the collection from firebase and make a list of the messages
-  constructor(private db: AngularFirestore, private actRt: ActivatedRoute) {
+  constructor(
+    private db: AngularFirestore,
+    private actRt: ActivatedRoute,
+    private router: Router
+  ) {
     db.collection<Question>('/easy')
       .valueChanges()
       .subscribe((result) => {
@@ -148,6 +154,7 @@ export class QuestionComponent implements OnInit {
 
       this.feedback = 'Correct!';
       this.questionCount = (this.questionCount + 1) % this.currentList.length;
+      this.score++;
     } else {
       console.log('Wrong');
       this.lives.pop();
@@ -176,6 +183,11 @@ export class QuestionComponent implements OnInit {
     }
     if (this.id == ':movies') {
       this.movies = true;
+    }
+  }
+  ngOnChanges(): void {
+    if (this.lives.length == 0) {
+      this.router.navigateByUrl('/game-over');
     }
   }
 }
