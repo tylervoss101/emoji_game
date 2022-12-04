@@ -143,10 +143,13 @@ mat-card-content {
 }
 .char-line-section {
   display: inline;
+  width: 70%;
+  height: auto;
   padding-top: 2vh;
+  padding-bottom: 1vh;
   font-weight: bold;
 }
 .char-line {
   padding: 3px;
-  font-size: 6vw;
+  font-size: 4vh;
 }
