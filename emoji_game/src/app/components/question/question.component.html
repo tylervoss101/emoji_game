@@ -1,8 +1,11 @@
 <!-- <p>Question {{ questionCount + 1 }}</p> -->
 <!-- <div *ngFor="let item of easyList">{{ item.question }}</div> -->
-<mat-card id="card">
-  <button class="menu" routerLink="/welcome" mode="easy">🏠</button>
-  <button class="menu" routerLink="/levels" mode="easy">🎚️</button>
+
+<mat-card id="card" *ngIf="lives.length != 0">
+  <div id="menu-container">
+    <button class="menu" routerLink="/welcome">🏠Home</button>
+    <button class="menu" routerLink="/levels">🎚️Levels</button>
+  </div>
   <div id="heart-container">
     <div *ngFor="let heart of lives">
       <mat-icon id="heart">favorite</mat-icon>
@@ -23,6 +26,7 @@
   </div>
   <mat-card-content>
     <input
+      id="input"
       class="input"
       (keyup.enter)="enter(questionCount)"
       [(ngModel)]="response"
@@ -43,4 +47,5 @@
   </div>
   <b> {{ feedback }}</b>
 </mat-card>
-<span *ngFor="let charLine of charLines">{{ charLine }}</span>
+<!-- <span *ngFor="let charLine of charLines">{{ charLine }}</span> -->
+<app-game-over *ngIf="lives.length == 0" score="{{ score }}"></app-game-over>

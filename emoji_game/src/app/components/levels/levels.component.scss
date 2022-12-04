@@ -1,0 +1,23 @@
+#container {
+  height: 100%;
+  width: 100%;
+  background-color: #42a5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+button {
+  font-size: clamp(30px, 4vw, 80px);
+  background-color: #ff3366;
+  border-radius: 30px;
+  border-color: transparent;
+}
+
+button:hover {
+  color: lightgray;
+  border-color: white;
+  cursor: pointer;
+}

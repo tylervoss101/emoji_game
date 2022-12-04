@@ -15,12 +15,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { GameOverComponent } from './components/game-over/game-over.component';
 @NgModule({
   declarations: [
     AppComponent,
     WelcomeComponent,
     QuestionComponent,
     LevelsComponent,
+    GameOverComponent,
   ],
   imports: [
     BrowserModule,
