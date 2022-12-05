@@ -8,12 +8,13 @@
   justify-content: center;
 }
 
-
 button {
   font-size: clamp(30px, 4vw, 80px);
   background-color: #ff3366;
   border-radius: 30px;
   border-color: transparent;
+  padding: 10px;
+  font-weight: bold;
 }
 
 button:hover {
