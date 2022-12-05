@@ -39,3 +39,11 @@ button:hover {
 .emojis {
   font-size: 75px;
 }
+
+.welcome {
+  margin-top: 50px;
+}
+.rules {
+  font-size: clamp(20px, 4vw, 30px);
+  width: 100%;
+}

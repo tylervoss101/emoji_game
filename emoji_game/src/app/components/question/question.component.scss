@@ -8,6 +8,7 @@
   align-items: center;
   justify-content: center;
   padding: 0px;
+  padding-top: 100px;
 }
 
 #header {
@@ -108,7 +109,7 @@ mat-card-content {
   display: inline-block;
   // margin-right: 60vw;
   border-radius: 30px;
-  font-size: clamp(15px, 2vw, 200px);
+  font-size: clamp(15px, 2vw, 20px);
   font-family: "Lexend", Courier, monospace;
   // font-weight: bold;
   background-color: #ff3366;
@@ -157,6 +158,4 @@ mat-card-content {
   // padding: 3px;
   font-size: 3vw;
   padding-left: 0.1em;
-
 }
-
