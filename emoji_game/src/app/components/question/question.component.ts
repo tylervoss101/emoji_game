@@ -49,6 +49,7 @@ export class QuestionComponent implements OnInit {
       .subscribe((result) => {
         if (result) {
           this.easyList = result;
+          this.questionCount = Math.floor(Math.random() * this.easyList.length);
         }
       });
 
@@ -57,6 +58,7 @@ export class QuestionComponent implements OnInit {
       .subscribe((result) => {
         if (result) {
           this.hardList = result;
+          this.questionCount = Math.floor(Math.random() * this.hardList.length);
         }
       });
     db.collection<Question>('/movies')
@@ -64,12 +66,12 @@ export class QuestionComponent implements OnInit {
       .subscribe((result) => {
         if (result) {
           this.moviesList = result;
+          this.questionCount = Math.floor(
+            Math.random() * this.moviesList.length
+          );
         }
       });
-    console.log(this.easyList);
-  }
-  displayCharCount(i: number) {
-    //sets the current list to easy, hard, or movies
+
     if (this.easy === true) {
       this.currentList = this.easyList;
     } else if (this.hard === true) {
@@ -77,7 +79,14 @@ export class QuestionComponent implements OnInit {
     } else if (this.movies === true) {
       this.currentList = this.moviesList;
     }
+  }
+  displayCharCount(i: number) {
+    //sets the current list to easy, hard, or movies
+
     this.charCount = this.currentList[i].answer.toLowerCase().length;
+  }
+  randomNumber(min: number, max: number) {
+    return Math.random() * (max - min) + min;
   }
   displayBlanks(str: string) {
     for (let i = 0; i < str.length; i++) {
@@ -118,7 +127,6 @@ export class QuestionComponent implements OnInit {
       for (let i = 0; i < this.splitArray.length; i++) {
         this.displayBlanks(this.splitArray[i]);
       }
-      console.log(this.charLines);
       this.charLines.pop();
     } else if (this.hintCount === 3) {
       this.wordCountMessage = 'Word Count: ' + this.wordCount;
@@ -128,7 +136,6 @@ export class QuestionComponent implements OnInit {
       this.charLines.pop();
     } else {
       this.hintCount = 0;
-      console.log('reset');
     }
   }
   calculateWordCount(str: string): number {
@@ -150,13 +157,10 @@ export class QuestionComponent implements OnInit {
     if (
       this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
     ) {
-      console.log('correct!');
-
       this.feedback = 'Correct!';
       this.questionCount = (this.questionCount + 1) % this.currentList.length;
       this.score++;
     } else {
-      console.log('Wrong');
       this.lives.pop();
       this.feedback = 'Try Again!';
     }
@@ -169,9 +173,8 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.questionCount =
-      Math.floor(Math.random() * this.currentList.length) + 1;
-    console.log(this.questionCount);
+    // this.questionCount =
+    //   Math.floor(Math.random() * this.currentList.length) + 1;
     Number(this.id);
     this.id = this.actRt.snapshot.paramMap.get('id')!;
     console.log(this.id);
@@ -183,11 +186,6 @@ export class QuestionComponent implements OnInit {
     }
     if (this.id == ':movies') {
       this.movies = true;
-    }
-  }
-  ngOnChanges(): void {
-    if (this.lives.length == 0) {
-      this.router.navigateByUrl('/game-over');
     }
   }
 }

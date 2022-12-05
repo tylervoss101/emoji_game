@@ -14,7 +14,9 @@
   <div id="white-section">
     <mat-card-header id="header">
       <div *ngIf="easy">
-        <div class="emoji">{{ easyList[questionCount].question }}</div>
+        <div class="emoji">
+          {{ easyList[questionCount].question }}
+        </div>
       </div>
       <div *ngIf="hard">
         <div class="emoji">{{ hardList[questionCount].question }}</div>
@@ -39,13 +41,13 @@
   <button class="button3" (click)="displayWordCount(questionCount)">
     HINT
   </button>
+  <b> {{ feedback }}</b>
   <b class="word-count">{{ wordCountMessage }}</b>
   <div class="char-line-section">
     <span class="char-line" *ngFor="let charLine of charLines">{{
       charLine
     }}</span>
   </div>
-  <b> {{ feedback }}</b>
 </mat-card>
 <!-- <span *ngFor="let charLine of charLines">{{ charLine }}</span> -->
 <app-game-over *ngIf="lives.length == 0" score="{{ score }}"></app-game-over>
