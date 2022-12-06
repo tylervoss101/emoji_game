@@ -169,3 +169,23 @@ mat-card-content {
   flex-direction: row;
   padding-left: 5px;
 }
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(0ex);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-1ex);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0ex);
+  }
+}
+.coin-adder {
+  font-size: clamp(30px, 2vw, 50px);
+  font-weight: 100;
+  color: white;
+  animation: fadeInOut 1s;
+}

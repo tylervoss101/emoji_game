@@ -36,6 +36,7 @@ export class QuestionComponent implements OnInit {
   charCount: number = 0;
   hintCount: number = 0;
   coinType: number = 0;
+  coinAdder: string = '';
   totalCoins: number = 0; //we should change this to local storage
   score: number = 0;
   wordCountMessage: string = '';
@@ -103,16 +104,16 @@ export class QuestionComponent implements OnInit {
   }
   displayBlanks(str: string) {
     for (let i = 0; i < str.length; i++) {
-      this.charLines.push('_ ');
+      this.charLines.push('_');
     }
-    this.charLines.push(' -- '); //using hyphens for now because the spaces don't show up on screen
+    this.charLines.push(' '); //using hyphens for now because the spaces don't show up on screen
   }
   displayBlanksPlusFirstLetter(str: string) {
     this.charLines.push(str.charAt(0));
     for (let i = 0; i < str.length - 1; i++) {
-      this.charLines.push('_ ');
+      this.charLines.push('_');
     }
-    this.charLines.push(' -- '); //using hyphens for now because the spaces don't show up on screen
+    this.charLines.push(' '); //using hyphens for now because the spaces don't show up on screen
   }
   hint(i: number) {
     this.wordCountMessage = '';
@@ -144,7 +145,7 @@ export class QuestionComponent implements OnInit {
         this.displayBlanks(this.splitArray[i]);
       }
       this.charLines.pop();
-      this.totalCoins = this.totalCoins - 4; //subtract even more coins for using a second hint
+      this.totalCoins = this.totalCoins - 1; //subtract even more coins for using a second hint
     }
     //if hint count is 3, display blanks, word count, and first letter of each word
     else if (this.hintCount === 3) {
@@ -153,7 +154,7 @@ export class QuestionComponent implements OnInit {
         this.displayBlanksPlusFirstLetter(this.splitArray[i]);
       }
       this.charLines.pop();
-      this.totalCoins = this.totalCoins - 10; //subtract 10 coins for using a third hint
+      this.totalCoins = this.totalCoins - 2; //subtract coins for using a third hint
     } else {
       this.hintCount = 0;
     }
@@ -184,7 +185,9 @@ export class QuestionComponent implements OnInit {
       this.feedback = 'Correct!';
       this.questionCount = (this.questionCount + 1) % this.currentList.length;
       this.score++;
+
       this.totalCoins = this.totalCoins + this.coinType;
+      this.coinDisplay();
     } else {
       this.lives.pop();
       this.feedback = 'Try Again!';
@@ -195,6 +198,13 @@ export class QuestionComponent implements OnInit {
     this.charCount = 0;
     this.hintCount = 0;
     this.charLines = [];
+  }
+  coinDisplay() {
+    console.log('coin display works');
+    this.coinAdder = '+' + String(this.coinType);
+    setTimeout(() => {
+      this.coinAdder = '';
+    }, 1000);
   }
   ngOnInit(): void {
     // this.questionCount =
