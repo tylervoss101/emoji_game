@@ -35,10 +35,13 @@ export class QuestionComponent implements OnInit {
   wordCount: number = 0;
   charCount: number = 0;
   hintCount: number = 0;
+  coinType: number = 0;
+  totalCoins: number = 0; //we should change this to local storage
   score: number = 0;
   wordCountMessage: string = '';
   charLines: string[] = [];
   value = 'Clear me';
+
   //get the collection from firebase and make a list of the messages
   constructor(
     private db: AngularFirestore,
@@ -111,7 +114,7 @@ export class QuestionComponent implements OnInit {
     }
     this.charLines.push(' -- '); //using hyphens for now because the spaces don't show up on screen
   }
-  displayWordCount(i: number) {
+  hint(i: number) {
     this.wordCountMessage = '';
     this.hintCount++;
     this.charLines = [];
@@ -129,8 +132,9 @@ export class QuestionComponent implements OnInit {
     //if hint count is 1, just display word count.
     if (this.hintCount === 1) {
       this.wordCountMessage = 'Word Count: ' + this.wordCount;
+      this.totalCoins = this.totalCoins - 1; //subtract a coin for using a hint
     }
-    //if hint count is 2, display character and word count
+    //if hint count is 2, display blanks and word count
     else if (this.hintCount === 2) {
       this.wordCountMessage = 'Word Count: ' + this.wordCount;
       this.wordCount = this.calculateWordCount(
@@ -140,12 +144,16 @@ export class QuestionComponent implements OnInit {
         this.displayBlanks(this.splitArray[i]);
       }
       this.charLines.pop();
-    } else if (this.hintCount === 3) {
+      this.totalCoins = this.totalCoins - 4; //subtract even more coins for using a second hint
+    }
+    //if hint count is 3, display blanks, word count, and first letter of each word
+    else if (this.hintCount === 3) {
       this.wordCountMessage = 'Word Count: ' + this.wordCount;
       for (let i = 0; i < this.splitArray.length; i++) {
         this.displayBlanksPlusFirstLetter(this.splitArray[i]);
       }
       this.charLines.pop();
+      this.totalCoins = this.totalCoins - 10; //subtract 10 coins for using a third hint
     } else {
       this.hintCount = 0;
     }
@@ -159,12 +167,16 @@ export class QuestionComponent implements OnInit {
     //sets the current list to easy, hard, or movies
     if (this.easy === true) {
       this.currentList = this.easyList;
+      this.coinType = 1;
     } else if (this.hard === true) {
       this.currentList = this.hardList;
+      this.coinType = 10;
     } else if (this.movies === true) {
       this.currentList = this.moviesList;
+      this.coinType = 5;
     } else if (this.bible === true) {
       this.currentList = this.bibleList;
+      this.coinType = 5;
     }
     if (
       this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
@@ -172,6 +184,7 @@ export class QuestionComponent implements OnInit {
       this.feedback = 'Correct!';
       this.questionCount = (this.questionCount + 1) % this.currentList.length;
       this.score++;
+      this.totalCoins = this.totalCoins + this.coinType;
     } else {
       this.lives.pop();
       this.feedback = 'Try Again!';

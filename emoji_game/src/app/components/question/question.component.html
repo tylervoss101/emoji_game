@@ -6,7 +6,9 @@
     <button class="menu" routerLink="/welcome">🏠Home</button>
     <button class="menu" routerLink="/levels">🎚️Levels</button>
   </div>
+
   <div id="heart-container">
+    <div class="total-coins">🪙{{ totalCoins }}</div>
     <div *ngFor="let heart of lives">
       <mat-icon id="heart">favorite</mat-icon>
     </div>
@@ -41,9 +43,7 @@
     ENTER</button
   ><br />
 
-  <button class="button3" (click)="displayWordCount(questionCount)">
-    HINT
-  </button>
+  <button class="button3" (click)="hint(questionCount)">HINT</button>
   <b> {{ feedback }}</b>
   <b class="word-count">{{ wordCountMessage }}</b>
   <div class="char-line-section">
@@ -52,5 +52,4 @@
     }}</span>
   </div>
 </mat-card>
-<!-- <span *ngFor="let charLine of charLines">{{ charLine }}</span> -->
 <app-game-over *ngIf="lives.length == 0" score="{{ score }}"></app-game-over>
