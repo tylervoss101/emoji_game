@@ -17,10 +17,12 @@ export class QuestionComponent implements OnInit {
   easy: boolean = false;
   hard: boolean = false;
   movies: boolean = false;
+  bible: boolean = false;
   id: string = ''; //id is passed from levels, either easy hard or movies
   easyList: Question[] = [];
   hardList: Question[] = [];
   moviesList: Question[] = [];
+  bibleList: Question[] = [];
   currentList: Question[] = [];
   splitArray: string[] = [];
   //keeps track of current question
@@ -37,7 +39,6 @@ export class QuestionComponent implements OnInit {
   wordCountMessage: string = '';
   charLines: string[] = [];
   value = 'Clear me';
-
   //get the collection from firebase and make a list of the messages
   constructor(
     private db: AngularFirestore,
@@ -52,7 +53,6 @@ export class QuestionComponent implements OnInit {
           this.questionCount = Math.floor(Math.random() * this.easyList.length);
         }
       });
-
     db.collection<Question>('/hard')
       .valueChanges()
       .subscribe((result) => {
@@ -71,18 +71,28 @@ export class QuestionComponent implements OnInit {
           );
         }
       });
-
+    db.collection<Question>('/bible')
+      .valueChanges()
+      .subscribe((result) => {
+        if (result) {
+          this.bibleList = result;
+          this.questionCount = Math.floor(
+            Math.random() * this.bibleList.length
+          );
+        }
+      });
     if (this.easy === true) {
       this.currentList = this.easyList;
     } else if (this.hard === true) {
       this.currentList = this.hardList;
     } else if (this.movies === true) {
       this.currentList = this.moviesList;
+    } else if (this.bible === true) {
+      this.currentList = this.bibleList;
     }
   }
   displayCharCount(i: number) {
     //sets the current list to easy, hard, or movies
-
     this.charCount = this.currentList[i].answer.toLowerCase().length;
   }
   randomNumber(min: number, max: number) {
@@ -112,6 +122,8 @@ export class QuestionComponent implements OnInit {
       this.currentList = this.hardList;
     } else if (this.movies === true) {
       this.currentList = this.moviesList;
+    } else if (this.bible === true) {
+      this.currentList = this.bibleList;
     }
     this.wordCount = this.calculateWordCount(this.currentList[i].answer);
     //if hint count is 1, just display word count.
@@ -140,7 +152,6 @@ export class QuestionComponent implements OnInit {
   }
   calculateWordCount(str: string): number {
     this.splitArray = str.split(' ');
-
     this.charLines.pop(); //deletes the unnecessary space at the end
     return this.splitArray.filter((word) => word !== '').length;
   }
@@ -152,8 +163,9 @@ export class QuestionComponent implements OnInit {
       this.currentList = this.hardList;
     } else if (this.movies === true) {
       this.currentList = this.moviesList;
+    } else if (this.bible === true) {
+      this.currentList = this.bibleList;
     }
-
     if (
       this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
     ) {
@@ -171,7 +183,6 @@ export class QuestionComponent implements OnInit {
     this.hintCount = 0;
     this.charLines = [];
   }
-
   ngOnInit(): void {
     // this.questionCount =
     //   Math.floor(Math.random() * this.currentList.length) + 1;
@@ -186,6 +197,9 @@ export class QuestionComponent implements OnInit {
     }
     if (this.id == ':movies') {
       this.movies = true;
+    }
+    if (this.id == ':bible') {
+      this.bible = true;
     }
   }
 }
