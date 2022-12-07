@@ -111,7 +111,6 @@ export class QuestionComponent implements OnInit {
       this.charLines.push('_');
     }
     this.charLines.push('\xa0\xa0\xa0\xa0'); //using hyphens for now because the spaces don't show up on screen
-
   }
 
   displayBlanksPlusFirstLetter(str: string) {
@@ -120,7 +119,6 @@ export class QuestionComponent implements OnInit {
       this.charLines.push('_');
     }
     this.charLines.push('\xa0\xa0\xa0\xa0'); //using hyphens for now because the spaces don't show up on screen
-
   }
   hint(i: number) {
     this.wordCountMessage = '';
@@ -138,38 +136,54 @@ export class QuestionComponent implements OnInit {
     }
     this.wordCount = this.calculateWordCount(this.currentList[i].answer);
     //if hint count is 1, just display word count.
-    if (this.hintCount === 1) {
-      this.wordCountMessage = 'Word Count: ' + this.wordCount;
-      this.coinDecreaseAmount = 1;
-      this.coinDecrease();
-      this.totalCoins = Math.max(0, this.totalCoins - this.coinDecreaseAmount); //subtract a coin for using a hint
-    }
-    //if hint count is 2, display blanks and word count
-    else if (this.hintCount === 2) {
-      this.wordCountMessage = 'Word Count: ' + this.wordCount;
-      this.wordCount = this.calculateWordCount(
-        this.currentList[i].answer.toLowerCase()
-      );
-      for (let i = 0; i < this.splitArray.length; i++) {
-        this.displayBlanks(this.splitArray[i]);
+    if (this.totalCoins > 0) {
+      if (this.hintCount === 1) {
+        this.wordCountMessage = 'Word Count: ' + this.wordCount;
+        this.coinDecreaseAmount = 1;
+        this.coinDecrease();
+        this.totalCoins = Math.max(
+          0,
+          this.totalCoins - this.coinDecreaseAmount
+        ); //subtract a coin for using a hint
       }
-      this.charLines.pop();
-      this.coinDecreaseAmount = 2;
-      this.coinDecrease();
-      this.totalCoins = Math.max(0, this.totalCoins - this.coinDecreaseAmount); //subtract even more coins for using a second hint
-    }
-    //if hint count is 3, display blanks, word count, and first letter of each word
-    else if (this.hintCount === 3) {
-      this.wordCountMessage = 'Word Count: ' + this.wordCount;
-      for (let i = 0; i < this.splitArray.length; i++) {
-        this.displayBlanksPlusFirstLetter(this.splitArray[i]);
+      //if hint count is 2, display blanks and word count
+      else if (this.hintCount === 2) {
+        this.wordCountMessage = 'Word Count: ' + this.wordCount;
+        this.wordCount = this.calculateWordCount(
+          this.currentList[i].answer.toLowerCase()
+        );
+        for (let i = 0; i < this.splitArray.length; i++) {
+          this.displayBlanks(this.splitArray[i]);
+        }
+        this.charLines.pop();
+        this.coinDecreaseAmount = 2;
+        this.coinDecrease();
+        this.totalCoins = Math.max(
+          0,
+          this.totalCoins - this.coinDecreaseAmount
+        ); //subtract even more coins for using a second hint
       }
-      this.charLines.pop();
-      this.coinDecreaseAmount = 3;
-      this.coinDecrease();
-      this.totalCoins = Math.max(0, this.totalCoins - this.coinDecreaseAmount); //subtract coins for using a third hint
+      //if hint count is 3, display blanks, word count, and first letter of each word
+      else if (this.hintCount === 3) {
+        this.wordCountMessage = 'Word Count: ' + this.wordCount;
+        for (let i = 0; i < this.splitArray.length; i++) {
+          this.displayBlanksPlusFirstLetter(this.splitArray[i]);
+        }
+        this.charLines.pop();
+        this.coinDecreaseAmount = 3;
+        this.coinDecrease();
+        this.totalCoins = Math.max(
+          0,
+          this.totalCoins - this.coinDecreaseAmount
+        ); //subtract coins for using a third hint
+      } else {
+        this.hintCount = 0;
+      }
     } else {
-      this.hintCount = 0;
+      this.wordCountMessage = 'Not Enough Coins!';
+      setTimeout(() => {
+        this.wordCountMessage = '';
+      }, 1000);
     }
   }
   calculateWordCount(str: string): number {
@@ -196,6 +210,9 @@ export class QuestionComponent implements OnInit {
       this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
     ) {
       this.feedback = 'Correct!';
+      setTimeout(() => {
+        this.feedback = '';
+      }, 1000);
       this.questionCount = (this.questionCount + 1) % this.currentList.length;
       this.score++;
 
@@ -204,6 +221,9 @@ export class QuestionComponent implements OnInit {
     } else {
       this.lives.pop();
       this.feedback = 'Try Again!';
+      setTimeout(() => {
+        this.feedback = '';
+      }, 1000);
     }
     this.response = '';
     this.wordCountMessage = '';
