@@ -191,6 +191,18 @@ export class QuestionComponent implements OnInit {
     this.charLines.pop(); //deletes the unnecessary space at the end
     return this.splitArray.filter((word) => word !== '').length;
   }
+
+  // removeFirstWord taken from https://bobbyhadz.com/blog/javascript-remove-first-word-from-string#:~:text=To%20remove%20the%20first%20word,with%20the%20first%20word%20removed.&text=Copied!
+  removeFirstWord(str: string) {
+    const indexOfSpace = str.indexOf(' ');
+
+    if (indexOfSpace === -1) {
+      return '';
+    }
+
+    return str.substring(indexOfSpace + 1);
+  }
+
   enter(i: number) {
     //sets the current list to easy, hard, or movies
     if (this.easy === true) {
@@ -206,8 +218,21 @@ export class QuestionComponent implements OnInit {
       this.currentList = this.bibleList;
       this.coinType = 5;
     }
+
+    // This code determines if the first word of the phrase is 'The' or 'the'.
+    // It allows the user to not have to type in 'the'
+    const first = this.currentList[i].answer.split(' ')[0];
+    let answerWithoutThe = this.response;
+    console.log(first);
+    if (first === 'The' || first === 'the') {
+      answerWithoutThe = this.removeFirstWord(this.currentList[i].answer);
+      console.log(answerWithoutThe);
+    }
+
     if (
-      this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
+      this.response.toLowerCase() ===
+        this.currentList[i].answer.toLowerCase() ||
+      this.response.toLowerCase() === answerWithoutThe.toLowerCase()
     ) {
       this.feedback = 'Correct!';
       setTimeout(() => {
@@ -215,7 +240,6 @@ export class QuestionComponent implements OnInit {
       }, 1000);
       this.questionCount = (this.questionCount + 1) % this.currentList.length;
       this.score++;
-
       this.totalCoins = this.totalCoins + this.coinType;
       this.coinIncrease();
     } else {
