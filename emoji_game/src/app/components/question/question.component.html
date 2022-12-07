@@ -3,8 +3,7 @@
 
 <mat-card id="card" *ngIf="lives.length != 0">
   <div id="menu-container">
-    <button class="menu" routerLink="/welcome">🏠Home</button>
-    <button class="menu" routerLink="/levels">🎚️Levels</button>
+    <button class="menu-button" routerLink="/levels">🎚️Levels</button>
   </div>
 
   <div id="heart-container">
@@ -43,12 +42,12 @@
       [(ngModel)]="response"
     />
   </mat-card-content>
-  <button class="button3" id="button" (click)="enter(questionCount)">
+  <button class="button" id="button" (click)="enter(questionCount)">
     ENTER</button
   ><br />
 
-  <button class="button3" (click)="hint(questionCount)">HINT</button>
-  <b> {{ feedback }}</b>
+  <button class="button" (click)="hint(questionCount)">HINT</button>
+  <b id="feedback"> {{ feedback }}</b>
   <b class="word-count">{{ wordCountMessage }}</b>
   <div class="char-line-section">
     <span class="char-line" *ngFor="let charLine of charLines"
