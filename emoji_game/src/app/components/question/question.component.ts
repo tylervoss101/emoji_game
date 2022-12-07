@@ -94,25 +94,29 @@ export class QuestionComponent implements OnInit {
       this.currentList = this.bibleList;
     }
   }
+
   displayCharCount(i: number) {
     //sets the current list to easy, hard, or movies
     this.charCount = this.currentList[i].answer.toLowerCase().length;
   }
+
   randomNumber(min: number, max: number) {
     return Math.random() * (max - min) + min;
   }
+
   displayBlanks(str: string) {
     for (let i = 0; i < str.length; i++) {
       this.charLines.push('_ ');
     }
-    this.charLines.push(' -- '); //using hyphens for now because the spaces don't show up on screen
+    this.charLines.push('\xa0\xa0\xa0\xa0'); //using hyphens for now because the spaces don't show up on screen
   }
+
   displayBlanksPlusFirstLetter(str: string) {
     this.charLines.push(str.charAt(0));
     for (let i = 0; i < str.length - 1; i++) {
       this.charLines.push('_ ');
     }
-    this.charLines.push(' -- '); //using hyphens for now because the spaces don't show up on screen
+    this.charLines.push('\xa0\xa0\xa0\xa0'); //using hyphens for now because the spaces don't show up on screen
   }
   hint(i: number) {
     this.wordCountMessage = '';

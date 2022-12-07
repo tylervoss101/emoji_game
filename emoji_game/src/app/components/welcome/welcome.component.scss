@@ -6,6 +6,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-bottom: 0px;
+  margin: 0px;
+
+}
+
+.container {
+  padding-bottom: 0px;
 }
 
 h1 {
@@ -25,10 +32,11 @@ button {
   font-size: clamp(30px, 4vw, 80px);
   background-color: #ff3366;
   border-radius: 30px;
-  border-color: transparent;
+  border: 0.1em solid black;
   padding: 0.2em;
   font-weight: bold;
   margin-bottom: 70px;
+
 }
 
 button:hover {
@@ -37,13 +45,16 @@ button:hover {
   cursor: pointer;
 }
 .emojis {
-  font-size: 75px;
+  font-size: clamp(30px, 4vw, 80px);
+  max-width: 5em;
+  min-width: 5em;
+  margin: 0.2em;
 }
 
-.welcome {
-  margin-top: 50px;
-}
+
+
 .rules {
   font-size: clamp(20px, 4vw, 30px);
   width: 100%;
 }
+
