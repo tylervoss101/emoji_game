@@ -36,6 +36,7 @@ export class QuestionComponent implements OnInit {
   charCount: number = 0;
   hintCount: number = 0;
   coinType: number = 0;
+  coinDecreaseAmount: number = 0;
   coinAdder: string = '';
   totalCoins: number = 0; //we should change this to local storage
   score: number = 0;
@@ -133,7 +134,9 @@ export class QuestionComponent implements OnInit {
     //if hint count is 1, just display word count.
     if (this.hintCount === 1) {
       this.wordCountMessage = 'Word Count: ' + this.wordCount;
-      this.totalCoins = this.totalCoins - 1; //subtract a coin for using a hint
+      this.coinDecreaseAmount = 1;
+      this.coinDecrease();
+      this.totalCoins = Math.max(0, this.totalCoins - this.coinDecreaseAmount); //subtract a coin for using a hint
     }
     //if hint count is 2, display blanks and word count
     else if (this.hintCount === 2) {
@@ -145,7 +148,9 @@ export class QuestionComponent implements OnInit {
         this.displayBlanks(this.splitArray[i]);
       }
       this.charLines.pop();
-      this.totalCoins = this.totalCoins - 1; //subtract even more coins for using a second hint
+      this.coinDecreaseAmount = 2;
+      this.coinDecrease();
+      this.totalCoins = Math.max(0, this.totalCoins - this.coinDecreaseAmount); //subtract even more coins for using a second hint
     }
     //if hint count is 3, display blanks, word count, and first letter of each word
     else if (this.hintCount === 3) {
@@ -154,7 +159,9 @@ export class QuestionComponent implements OnInit {
         this.displayBlanksPlusFirstLetter(this.splitArray[i]);
       }
       this.charLines.pop();
-      this.totalCoins = this.totalCoins - 2; //subtract coins for using a third hint
+      this.coinDecreaseAmount = 3;
+      this.coinDecrease();
+      this.totalCoins = Math.max(0, this.totalCoins - this.coinDecreaseAmount); //subtract coins for using a third hint
     } else {
       this.hintCount = 0;
     }
@@ -187,7 +194,7 @@ export class QuestionComponent implements OnInit {
       this.score++;
 
       this.totalCoins = this.totalCoins + this.coinType;
-      this.coinDisplay();
+      this.coinIncrease();
     } else {
       this.lives.pop();
       this.feedback = 'Try Again!';
@@ -199,9 +206,14 @@ export class QuestionComponent implements OnInit {
     this.hintCount = 0;
     this.charLines = [];
   }
-  coinDisplay() {
-    console.log('coin display works');
+  coinIncrease() {
     this.coinAdder = '+' + String(this.coinType);
+    setTimeout(() => {
+      this.coinAdder = '';
+    }, 1000);
+  }
+  coinDecrease() {
+    this.coinAdder = '-' + String(this.coinDecreaseAmount);
     setTimeout(() => {
       this.coinAdder = '';
     }, 1000);
