@@ -246,7 +246,6 @@ export class QuestionComponent implements OnInit {
 
     if (first === 'The' || first === 'the') {
       this.answerWithoutThe = this.response;
-
       this.answerWithoutThe = this.removeFirstWord(this.currentList[i].answer);
     }
 
@@ -254,7 +253,8 @@ export class QuestionComponent implements OnInit {
       this.isSimilar(
         this.response.toLowerCase(),
         this.currentList[i].answer.toLowerCase()
-      ) ||
+      )
+      ||
       this.response.toLowerCase() === this.answerWithoutThe.toLowerCase()
     ) {
       this.feedback = 'Correct!';
