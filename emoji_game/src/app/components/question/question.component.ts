@@ -235,13 +235,13 @@ export class QuestionComponent implements OnInit {
       this.coinType = 1;
     } else if (this.hard === true) {
       this.currentList = this.hardList;
-      this.coinType = 10;
+      this.coinType = 3;
     } else if (this.movies === true) {
       this.currentList = this.moviesList;
-      this.coinType = 5;
+      this.coinType = 2;
     } else if (this.bible === true) {
       this.currentList = this.bibleList;
-      this.coinType = 5;
+      this.coinType = 2;
     }
     // This code determines if the first word of the phrase is 'The' or 'the'.
 

@@ -4,7 +4,7 @@
   height: 50%;
   border-radius: 20px;
   position: absolute;
-  top: 27%;
+  top: 25%;
   padding: 0.4em;
   font-size: clamp(12px, 2vw, 15px);
 }
@@ -19,6 +19,10 @@ h1,
 li {
   color: white;
 }
+h1 {
+  padding-left: 5%;
+}
 li {
   padding-top: 10px;
+  padding-right: 5px;
 }
