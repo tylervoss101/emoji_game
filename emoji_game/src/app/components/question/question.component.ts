@@ -42,7 +42,7 @@ export class QuestionComponent implements OnInit {
   coinType: number = 0;
   coinDecreaseAmount: number = 0;
   coinAdder: string = '';
-  totalCoins: number = 0; //we should change this to local storage
+  totalCoins = Number(localStorage.getItem('totalCoins')!); //uses local storage
   score: number = 0;
   wordCountMessage: string = '';
   charLines: string[] = [];
@@ -149,6 +149,7 @@ export class QuestionComponent implements OnInit {
           0,
           this.totalCoins - this.coinDecreaseAmount
         ); //subtract a coin for using a hint
+        localStorage.setItem('totalCoins', String(this.totalCoins));
       }
       //if hint count is 2, display blanks and word count
       else if (this.hintCount === 2) {
@@ -166,6 +167,7 @@ export class QuestionComponent implements OnInit {
           0,
           this.totalCoins - this.coinDecreaseAmount
         ); //subtract even more coins for using a second hint
+        localStorage.setItem('totalCoins', String(this.totalCoins));
       }
       //if hint count is 3, display blanks, word count, and first letter of each word
       else if (this.hintCount === 3) {
@@ -180,6 +182,7 @@ export class QuestionComponent implements OnInit {
           0,
           this.totalCoins - this.coinDecreaseAmount
         ); //subtract coins for using a third hint
+        localStorage.setItem('totalCoins', String(this.totalCoins));
       } else {
         this.hintCount = 0;
       }
@@ -265,6 +268,7 @@ export class QuestionComponent implements OnInit {
       this.questionCount = (this.questionCount + 1) % this.currentList.length;
       this.score++;
       this.totalCoins = this.totalCoins + this.coinType;
+      localStorage.setItem('totalCoins', String(this.totalCoins));
       this.coinIncrease();
     } else {
       this.lives.pop();
