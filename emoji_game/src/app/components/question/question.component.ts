@@ -3,7 +3,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
-//mport levenshtein from 'fast-levenshtein';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AboutComponent } from 'src/app/about/about.component';
 interface Question {
   question: string;
   answer: string;
@@ -20,6 +21,7 @@ export class QuestionComponent implements OnInit {
   hard: boolean = false;
   movies: boolean = false;
   bible: boolean = false;
+  aboutClicked: boolean = false;
   id: string = ''; //id is passed from levels, either easy hard or movies
   easyList: Question[] = [];
   hardList: Question[] = [];
@@ -290,6 +292,9 @@ export class QuestionComponent implements OnInit {
     setTimeout(() => {
       this.coinAdder = '';
     }, 1000);
+  }
+  toggleModal(e: boolean) {
+    return !e;
   }
   ngOnInit(): void {
     // this.questionCount =

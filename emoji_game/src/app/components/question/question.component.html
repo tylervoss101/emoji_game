@@ -10,6 +10,7 @@
     <div class="total-coins">
       💰{{ totalCoins }}
       <span class="coin-adder"> &nbsp;{{ coinAdder }}</span>
+      <app-about *ngIf="aboutClicked"></app-about>
     </div>
 
     <div *ngFor="let heart of lives">

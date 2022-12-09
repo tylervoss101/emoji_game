@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { GameOverComponent } from './components/game-over/game-over.component';
+import { AboutComponent } from './about/about.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +24,7 @@ import { GameOverComponent } from './components/game-over/game-over.component';
     QuestionComponent,
     LevelsComponent,
     GameOverComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
