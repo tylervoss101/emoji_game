@@ -38,7 +38,7 @@ export class QuestionComponent implements OnInit {
   coinType: number = 0;
   coinDecreaseAmount: number = 0;
   coinAdder: string = '';
-  totalCoins: number = 0; //we should change this to local storage
+  totalCoins: number = 30; //we should change this to local storage
   score: number = 0;
   wordCountMessage: string = '';
   charLines: string[] = [];
