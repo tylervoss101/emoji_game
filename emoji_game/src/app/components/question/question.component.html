@@ -2,16 +2,16 @@
 <!-- <div *ngFor="let item of easyList">{{ item.question }}</div> -->
 
 <mat-card id="card" *ngIf="lives.length != 0">
+  <app-about *ngIf="aboutClicked"></app-about>
   <div id="menu-container">
     <button class="menu-button" routerLink="/levels">🎚️Levels</button>
-    <mat-icon id="help-icon">help_outline</mat-icon>
+    <mat-icon (click)="toggleModal()" id="help-icon">help_outline</mat-icon>
   </div>
 
   <div id="heart-container">
     <div class="total-coins">
       💰{{ totalCoins }}
       <span class="coin-adder"> &nbsp;{{ coinAdder }}</span>
-      <app-about *ngIf="aboutClicked"></app-about>
     </div>
 
     <div *ngFor="let heart of lives">

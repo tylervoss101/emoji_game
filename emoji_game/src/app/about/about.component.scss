@@ -1,0 +1,24 @@
+.about {
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 97%;
+  height: 50%;
+  border-radius: 20px;
+  position: absolute;
+  top: 27%;
+  padding: 0.4em;
+  font-size: clamp(12px, 2vw, 15px);
+}
+.about-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1,
+li {
+  color: white;
+}
+li {
+  padding-top: 10px;
+}

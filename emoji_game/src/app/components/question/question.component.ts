@@ -42,7 +42,7 @@ export class QuestionComponent implements OnInit {
   coinType: number = 0;
   coinDecreaseAmount: number = 0;
   coinAdder: string = '';
-  totalCoins: number = 30; //we should change this to local storage
+  totalCoins: number = 0; //we should change this to local storage
   score: number = 0;
   wordCountMessage: string = '';
   charLines: string[] = [];
@@ -255,8 +255,7 @@ export class QuestionComponent implements OnInit {
       this.isSimilar(
         this.response.toLowerCase(),
         this.currentList[i].answer.toLowerCase()
-      )
-      ||
+      ) ||
       this.response.toLowerCase() === this.answerWithoutThe.toLowerCase()
     ) {
       this.feedback = 'Correct!';
@@ -293,8 +292,9 @@ export class QuestionComponent implements OnInit {
       this.coinAdder = '';
     }, 1000);
   }
-  toggleModal(e: boolean) {
-    return !e;
+  toggleModal() {
+    this.aboutClicked = !this.aboutClicked;
+    return this.aboutClicked;
   }
   ngOnInit(): void {
     // this.questionCount =
