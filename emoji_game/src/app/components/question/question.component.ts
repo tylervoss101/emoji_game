@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+//mport levenshtein from 'fast-levenshtein';
 interface Question {
   question: string;
   answer: string;
@@ -14,6 +15,7 @@ interface Question {
 })
 export class QuestionComponent implements OnInit {
   //booleans to keep track of what level it is
+  levenshtein = require('fast-levenshtein');
   easy: boolean = false;
   hard: boolean = false;
   movies: boolean = false;
@@ -43,7 +45,7 @@ export class QuestionComponent implements OnInit {
   wordCountMessage: string = '';
   charLines: string[] = [];
   value = 'Clear me';
-
+  answerWithoutThe = '';
   //get the collection from firebase and make a list of the messages
   constructor(
     private db: AngularFirestore,
@@ -203,6 +205,24 @@ export class QuestionComponent implements OnInit {
     return str.substring(indexOfSpace + 1);
   }
 
+  //uses leveshtein function to calculate similarity between words
+  //this function allows a user to misspell a couple of letters
+  isSimilar(input: string, answer: string): boolean {
+    // Calculate the Levenshtein distance between the input and answer strings.
+    // This will give us the number of edits (insertions, deletions, or substitutions)
+    // needed to make the input string match the answer string.
+    const distance = this.levenshtein.get(input, answer);
+
+    // Calculate the length of the answer string.
+    const length = answer.length;
+
+    // Calculate the similarity as a percentage by subtracting the distance from the length
+    // and dividing by the length. Multiply by 100 to get the percentage.
+    const similarity = ((length - distance) / length) * 100;
+    console.log(similarity >= 80);
+    // Return true if the similarity is 80% or greater, otherwise return false.
+    return similarity >= 80;
+  }
   enter(i: number) {
     //sets the current list to easy, hard, or movies
     if (this.easy === true) {
@@ -218,21 +238,24 @@ export class QuestionComponent implements OnInit {
       this.currentList = this.bibleList;
       this.coinType = 5;
     }
-
     // This code determines if the first word of the phrase is 'The' or 'the'.
+
     // It allows the user to not have to type in 'the'
-    // const first = this.currentList[i].answer.split(' ')[0];
-    // let answerWithoutThe = this.response;
-    // console.log(first);
-    // if (first === 'The' || first === 'the') {
-    //   answerWithoutThe = this.removeFirstWord(this.currentList[i].answer);
-    //   console.log(answerWithoutThe);
-    // }
+
+    const first = this.currentList[i].answer.split(' ')[0];
+
+    if (first === 'The' || first === 'the') {
+      this.answerWithoutThe = this.response;
+
+      this.answerWithoutThe = this.removeFirstWord(this.currentList[i].answer);
+    }
 
     if (
-      this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
-      // ||
-      // this.response.toLowerCase() === answerWithoutThe.toLowerCase()
+      this.isSimilar(
+        this.response.toLowerCase(),
+        this.currentList[i].answer.toLowerCase()
+      ) ||
+      this.response.toLowerCase() === this.answerWithoutThe.toLowerCase()
     ) {
       this.feedback = 'Correct!';
       setTimeout(() => {
