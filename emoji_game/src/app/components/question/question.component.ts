@@ -221,18 +221,18 @@ export class QuestionComponent implements OnInit {
 
     // This code determines if the first word of the phrase is 'The' or 'the'.
     // It allows the user to not have to type in 'the'
-    const first = this.currentList[i].answer.split(' ')[0];
-    let answerWithoutThe = this.response;
-    console.log(first);
-    if (first === 'The' || first === 'the') {
-      answerWithoutThe = this.removeFirstWord(this.currentList[i].answer);
-      console.log(answerWithoutThe);
-    }
+    // const first = this.currentList[i].answer.split(' ')[0];
+    // let answerWithoutThe = this.response;
+    // console.log(first);
+    // if (first === 'The' || first === 'the') {
+    //   answerWithoutThe = this.removeFirstWord(this.currentList[i].answer);
+    //   console.log(answerWithoutThe);
+    // }
 
     if (
-      this.response.toLowerCase() ===
-        this.currentList[i].answer.toLowerCase() ||
-      this.response.toLowerCase() === answerWithoutThe.toLowerCase()
+      this.response.toLowerCase() === this.currentList[i].answer.toLowerCase()
+      // ||
+      // this.response.toLowerCase() === answerWithoutThe.toLowerCase()
     ) {
       this.feedback = 'Correct!';
       setTimeout(() => {
