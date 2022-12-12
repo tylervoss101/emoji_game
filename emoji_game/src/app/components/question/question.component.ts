@@ -108,7 +108,6 @@ export class QuestionComponent implements OnInit {
 
   // logic for the hint button and coin removal
   hint(i: number) {
-    this.totalCoins = this.totalCoins + 2000;
     this.wordCountMessage = '';
     this.hintCount++;
     this.charLines = [];
