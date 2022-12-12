@@ -23,32 +23,33 @@ export class QuestionComponent implements OnInit {
   bible: boolean = false;
   aboutClicked: boolean = false;
   id: string = ''; //id is passed from levels, either easy hard or movies
+  //these lists store each type of question
   easyList: Question[] = [];
   hardList: Question[] = [];
   moviesList: Question[] = [];
   bibleList: Question[] = [];
-  currentList: Question[] = [];
-  splitArray: string[] = [];
+  currentList: Question[] = []; //contains which list is being used
+  splitArray: string[] = []; //contains the words from a single answer
   //keeps track of current question
   questionCount: number = 0;
   lives: number[] = [1, 2, 3];
   gameover: boolean = false;
   response: string = ''; //users input
   answer: string = ''; //actual answer
-  feedback: string = '';
+  feedback: string = ''; //feedback displayed on screen
   wordCount: number = 0;
   charCount: number = 0;
   hintCount: number = 0;
   coinType: number = 0;
-  coinDecreaseAmount: number = 0;
-  coinAdder: string = '';
+  coinDecreaseAmount: number = 0; //to display the number of coins you subtract
+  coinAdder: string = ''; //this variable is to display the number of coins you gain
   totalCoins = Number(localStorage.getItem('totalCoins')!); //uses local storage
   score: number = 0;
   wordCountMessage: string = '';
   charLines: string[] = [];
   value = 'Clear me';
   answerWithoutThe = '';
-  //get the collection from firebase and make a list of the messages
+  //get the collection from firebase and make a list of the questions
   constructor(
     private db: AngularFirestore,
     private actRt: ActivatedRoute,
@@ -94,33 +95,30 @@ export class QuestionComponent implements OnInit {
           );
         }
       });
-    // assigns current list to current level list
+    this.setList();
+  }
+  setList() {
+    //sets the current list to easy, hard, or movies
     if (this.easy === true) {
       this.currentList = this.easyList;
+      this.coinType = 1;
     } else if (this.hard === true) {
       this.currentList = this.hardList;
+      this.coinType = 3;
     } else if (this.movies === true) {
       this.currentList = this.moviesList;
+      this.coinType = 2;
     } else if (this.bible === true) {
       this.currentList = this.bibleList;
+      this.coinType = 2;
     }
   }
-
   // logic for the hint button and coin removal
   hint(i: number) {
     this.wordCountMessage = '';
     this.hintCount++;
     this.charLines = [];
-    //sets the current list to easy, hard, or movies
-    if (this.easy === true) {
-      this.currentList = this.easyList;
-    } else if (this.hard === true) {
-      this.currentList = this.hardList;
-    } else if (this.movies === true) {
-      this.currentList = this.moviesList;
-    } else if (this.bible === true) {
-      this.currentList = this.bibleList;
-    }
+    this.setList();
     this.wordCount = this.calculateWordCount(this.currentList[i].answer);
     //if hint count is 1, just display word count.
     if (this.totalCoins > 0) {
@@ -215,8 +213,14 @@ export class QuestionComponent implements OnInit {
 
     return str.substring(indexOfSpace + 1);
   }
+  //got help from stack overflow to get rid of white space
+  //https://stackoverflow.com/questions/49145250/how-to-remove-whitespace-from-a-string-in-typescript
+  stripExtraWhiteSpace(str: string): string {
+    return str.replace(/\s+/g, ' ');
+  }
 
   //uses leveshtein function to calculate similarity between words
+  //got help from https://itnext.io/levenshtein-distance-in-typescript-6de81ea2fb63
   //this function allows a user to misspell a couple of letters
   isSimilar(input: string, answer: string): boolean {
     // Calculate the Levenshtein distance between the input and answer strings.
@@ -224,10 +228,10 @@ export class QuestionComponent implements OnInit {
     // needed to make the input string match the answer string.
     const distance = this.levenshtein.get(input, answer);
 
-    // Calculate the length of the answer string.
+    // Calculate the length of the answer
     const length = answer.length;
 
-    // Calculate the similarity as a percentage by subtracting the distance from the length
+    // Calculate the similarity by subtracting the distance from the length
     // and dividing by the length. Multiply by 100 to get the percentage.
     const similarity = ((length - distance) / length) * 100;
     console.log(similarity >= 80);
@@ -237,20 +241,7 @@ export class QuestionComponent implements OnInit {
 
   // logic for when a user enters a response
   enter(i: number) {
-    //sets the current list to easy, hard, or movies
-    if (this.easy === true) {
-      this.currentList = this.easyList;
-      this.coinType = 1;
-    } else if (this.hard === true) {
-      this.currentList = this.hardList;
-      this.coinType = 3;
-    } else if (this.movies === true) {
-      this.currentList = this.moviesList;
-      this.coinType = 2;
-    } else if (this.bible === true) {
-      this.currentList = this.bibleList;
-      this.coinType = 2;
-    }
+    this.setList();
 
     // Determines if the first word of the phrase is 'The' or 'the'. It allows the user to not have to type in 'the'
     const first = this.currentList[i].answer.split(' ')[0];
@@ -261,13 +252,17 @@ export class QuestionComponent implements OnInit {
     }
 
     if (
+      //if the input is 80% or more similar to the answer, it will still count as correct
       this.isSimilar(
-        this.response.toLowerCase(),
+        //this function strips extra white spaces from the middle.
+        // Trim gets rid of white spaces at the end and beginning
+        this.stripExtraWhiteSpace(this.response.toLowerCase().trim()),
         this.currentList[i].answer.toLowerCase()
       ) ||
-      this.response.toLowerCase() === this.answerWithoutThe.toLowerCase() // allows answer to be without the word 'The'
+      this.stripExtraWhiteSpace(this.response.toLowerCase().trim()) ===
+        this.answerWithoutThe.toLowerCase() // allows answer to be without the word 'The'
     ) {
-      // if correct
+      // if correct, feedback is correct, and increase question count, score, and coins.
       this.feedback = 'Correct!';
       setTimeout(() => {
         this.feedback = '';
@@ -278,7 +273,7 @@ export class QuestionComponent implements OnInit {
       localStorage.setItem('totalCoins', String(this.totalCoins));
       this.coinIncrease();
     } else {
-      // if incorrect
+      // if incorrect, lose a life
       this.lives.pop();
       this.feedback = 'Try Again!';
       setTimeout(() => {
