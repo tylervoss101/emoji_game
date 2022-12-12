@@ -141,24 +141,24 @@ mat-card-content {
 }
 
 .word-count {
-  padding-top: 1em;
+  padding-top: 0.25em;
 }
 .char-line-section {
   text-align: center;
   display: inline;
-  margin-top: 0em;
   font-weight: bold;
-  margin-bottom: 0;
-  padding-top: 2em;
+  padding-top: 0.25em;
   padding-bottom: 5em;
   text-align: center;
   min-width: 20em;
   padding-left: 2em;
   padding-right: 2em;
+  inline-size: 31.25em;
+  overflow-wrap: break-word;
 }
 .char-line {
   // padding: 3px;
-  font-size: clamp(30px, 3vw, 50px);
+  font-size: clamp(30px, 3vw, 35px);
   padding-left: 0.1em;
 }
 
@@ -171,30 +171,8 @@ mat-card-content {
   flex-direction: row;
   padding-left: 5px;
 }
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-    transform: translateY(0ex);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-1ex);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(0ex);
-  }
-}
 .coin-adder {
   font-size: clamp(30px, 2vw, 50px);
   font-weight: 100;
   color: white;
-  animation: fadeInOut 1s;
-}
-
-.fade {
-  font-size: clamp(30px, 2vw, 50px);
-  font-weight: 100;
-  color: white;
-  animation: fadeInOut 1s;
 }

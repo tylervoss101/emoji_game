@@ -54,6 +54,7 @@ export class QuestionComponent implements OnInit {
     private actRt: ActivatedRoute,
     private router: Router
   ) {
+    //creates a list of easy questions from firestore
     db.collection<Question>('/easy')
       .valueChanges()
       .subscribe((result) => {
@@ -62,6 +63,7 @@ export class QuestionComponent implements OnInit {
           this.questionCount = Math.floor(Math.random() * this.easyList.length); // starts the list at a random question
         }
       });
+    //creates a list of hard  questions from firestore
     db.collection<Question>('/hard')
       .valueChanges()
       .subscribe((result) => {
@@ -70,6 +72,7 @@ export class QuestionComponent implements OnInit {
           this.questionCount = Math.floor(Math.random() * this.hardList.length);
         }
       });
+    //creates a list of movie questions from firestore
     db.collection<Question>('/movies')
       .valueChanges()
       .subscribe((result) => {
@@ -80,6 +83,7 @@ export class QuestionComponent implements OnInit {
           );
         }
       });
+    //creates a list of bible questions from firestore
     db.collection<Question>('/bible')
       .valueChanges()
       .subscribe((result) => {
@@ -104,6 +108,7 @@ export class QuestionComponent implements OnInit {
 
   // logic for the hint button and coin removal
   hint(i: number) {
+    this.totalCoins = this.totalCoins + 2000;
     this.wordCountMessage = '';
     this.hintCount++;
     this.charLines = [];
