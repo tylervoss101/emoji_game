@@ -59,7 +59,7 @@ export class QuestionComponent implements OnInit {
       .subscribe((result) => {
         if (result) {
           this.easyList = result;
-          this.questionCount = Math.floor(Math.random() * this.easyList.length);
+          this.questionCount = Math.floor(Math.random() * this.easyList.length); // starts the list at a random question
         }
       });
     db.collection<Question>('/hard')
@@ -90,6 +90,7 @@ export class QuestionComponent implements OnInit {
           );
         }
       });
+    // assigns current list to current level list
     if (this.easy === true) {
       this.currentList = this.easyList;
     } else if (this.hard === true) {
@@ -101,29 +102,7 @@ export class QuestionComponent implements OnInit {
     }
   }
 
-  displayCharCount(i: number) {
-    //sets the current list to easy, hard, or movies
-    this.charCount = this.currentList[i].answer.toLowerCase().length;
-  }
-
-  randomNumber(min: number, max: number) {
-    return Math.random() * (max - min) + min;
-  }
-
-  displayBlanks(str: string) {
-    for (let i = 0; i < str.length; i++) {
-      this.charLines.push('_');
-    }
-    this.charLines.push('\xa0\xa0\xa0\xa0'); //using hyphens for now because the spaces don't show up on screen
-  }
-
-  displayBlanksPlusFirstLetter(str: string) {
-    this.charLines.push(str.charAt(0));
-    for (let i = 0; i < str.length - 1; i++) {
-      this.charLines.push('_');
-    }
-    this.charLines.push('\xa0\xa0\xa0\xa0'); //using hyphens for now because the spaces don't show up on screen
-  }
+  // logic for the hint button and coin removal
   hint(i: number) {
     this.wordCountMessage = '';
     this.hintCount++;
@@ -193,6 +172,29 @@ export class QuestionComponent implements OnInit {
       }, 1000);
     }
   }
+
+  // sets character count to list length
+  displayCharCount(i: number) {
+    this.charCount = this.currentList[i].answer.toLowerCase().length;
+  }
+
+  // display hint 2, with only blanks
+  displayBlanks(str: string) {
+    for (let i = 0; i < str.length; i++) {
+      this.charLines.push('_');
+    }
+    this.charLines.push('\xa0\xa0\xa0\xa0'); // \xa0 represents a space character
+  }
+
+  // display hint 3, with blanks and first letter
+  displayBlanksPlusFirstLetter(str: string) {
+    this.charLines.push(str.charAt(0));
+    for (let i = 0; i < str.length - 1; i++) {
+      this.charLines.push('_');
+    }
+    this.charLines.push('\xa0\xa0\xa0\xa0'); // \xa0 represents a space character
+  }
+
   calculateWordCount(str: string): number {
     this.splitArray = str.split(' ');
     this.charLines.pop(); //deletes the unnecessary space at the end
@@ -228,6 +230,8 @@ export class QuestionComponent implements OnInit {
     // Return true if the similarity is 80% or greater, otherwise return false.
     return similarity >= 80;
   }
+
+  // logic for when a user enters a response
   enter(i: number) {
     //sets the current list to easy, hard, or movies
     if (this.easy === true) {
@@ -243,10 +247,8 @@ export class QuestionComponent implements OnInit {
       this.currentList = this.bibleList;
       this.coinType = 2;
     }
-    // This code determines if the first word of the phrase is 'The' or 'the'.
 
-    // It allows the user to not have to type in 'the'
-
+    // Determines if the first word of the phrase is 'The' or 'the'. It allows the user to not have to type in 'the'
     const first = this.currentList[i].answer.split(' ')[0];
 
     if (first === 'The' || first === 'the') {
@@ -259,24 +261,27 @@ export class QuestionComponent implements OnInit {
         this.response.toLowerCase(),
         this.currentList[i].answer.toLowerCase()
       ) ||
-      this.response.toLowerCase() === this.answerWithoutThe.toLowerCase()
+      this.response.toLowerCase() === this.answerWithoutThe.toLowerCase() // allows answer to be without the word 'The'
     ) {
+      // if correct
       this.feedback = 'Correct!';
       setTimeout(() => {
         this.feedback = '';
       }, 1000);
-      this.questionCount = (this.questionCount + 1) % this.currentList.length;
+      this.questionCount = (this.questionCount + 1) % this.currentList.length; // goes to the next question
       this.score++;
       this.totalCoins = this.totalCoins + this.coinType;
       localStorage.setItem('totalCoins', String(this.totalCoins));
       this.coinIncrease();
     } else {
+      // if incorrect
       this.lives.pop();
       this.feedback = 'Try Again!';
       setTimeout(() => {
         this.feedback = '';
       }, 1000);
     }
+    // reset variables each question
     this.response = '';
     this.wordCountMessage = '';
     this.wordCount = 0;
@@ -284,25 +289,30 @@ export class QuestionComponent implements OnInit {
     this.hintCount = 0;
     this.charLines = [];
   }
+
+  // increase coin amount
   coinIncrease() {
     this.coinAdder = '+' + String(this.coinType);
     setTimeout(() => {
       this.coinAdder = '';
     }, 1000);
   }
+
+  // decrease coin amount
   coinDecrease() {
     this.coinAdder = '-' + String(this.coinDecreaseAmount);
     setTimeout(() => {
       this.coinAdder = '';
     }, 1000);
   }
+  // toggle the pop up modal
   toggleModal() {
     this.aboutClicked = !this.aboutClicked;
     return this.aboutClicked;
   }
+
+  // on initialization, the route id is assigned and corresponding booleans are assigned for easier comparisons in other functions
   ngOnInit(): void {
-    // this.questionCount =
-    //   Math.floor(Math.random() * this.currentList.length) + 1;
     Number(this.id);
     this.id = this.actRt.snapshot.paramMap.get('id')!;
     console.log(this.id);
