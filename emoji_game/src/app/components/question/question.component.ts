@@ -120,8 +120,9 @@ export class QuestionComponent implements OnInit {
     this.charLines = [];
     this.setList();
     this.wordCount = this.calculateWordCount(this.currentList[i].answer);
-    //if hint count is 1, just display word count.
+    //you can only use a hint if you have enough coins
     if (this.totalCoins > 0) {
+      //if hint count is 1, just display word count.
       if (this.hintCount === 1) {
         this.wordCountMessage = 'Word Count: ' + this.wordCount;
         this.coinDecreaseAmount = 1;
@@ -130,7 +131,7 @@ export class QuestionComponent implements OnInit {
           0,
           this.totalCoins - this.coinDecreaseAmount
         ); //subtract a coin for using a hint
-        localStorage.setItem('totalCoins', String(this.totalCoins));
+        localStorage.setItem('totalCoins', String(this.totalCoins)); //put in local storage
       }
       //if hint count is 2, display blanks and word count
       else if (this.hintCount === 2) {
@@ -157,7 +158,7 @@ export class QuestionComponent implements OnInit {
           this.displayBlanksPlusFirstLetter(this.splitArray[i]);
         }
         this.charLines.pop();
-        this.coinDecreaseAmount = 3;
+        this.coinDecreaseAmount = 2;
         this.coinDecrease();
         this.totalCoins = Math.max(
           0,
@@ -213,15 +214,14 @@ export class QuestionComponent implements OnInit {
 
     return str.substring(indexOfSpace + 1);
   }
-  //got help from stack overflow to get rid of white space
+  //Get rid of white space, got help from stack overflow
   //https://stackoverflow.com/questions/49145250/how-to-remove-whitespace-from-a-string-in-typescript
   stripExtraWhiteSpace(str: string): string {
     return str.replace(/\s+/g, ' ');
   }
-
+  //this function allows a user to misspell a couple of letters
   //uses leveshtein function to calculate similarity between words
   //got help from https://itnext.io/levenshtein-distance-in-typescript-6de81ea2fb63
-  //this function allows a user to misspell a couple of letters
   isSimilar(input: string, answer: string): boolean {
     // Calculate the Levenshtein distance between the input and answer strings.
     // This will give us the number of edits (insertions, deletions, or substitutions)
