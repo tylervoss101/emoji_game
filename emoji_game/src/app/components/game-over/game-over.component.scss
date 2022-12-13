@@ -28,8 +28,9 @@ button {
   font-size: clamp(30px, 4vw, 80px);
   background-color: #ff3366;
   border-radius: 30px;
-  border-color: transparent;
+  border: 0.1em solid black;
   color: white;
+  padding: 0.1em;
 }
 
 button:hover {
